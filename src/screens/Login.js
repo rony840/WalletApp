@@ -1,3 +1,4 @@
+import React, { useState } from 'react';
 import { StyleSheet, SafeAreaView, View, ScrollView, Image, Text } from 'react-native';
 import { FormButton, FormField, Background } from '../components/Components';
 import { useNavigation } from '@react-navigation/native';
@@ -6,13 +7,14 @@ import { Colors } from '../assets/colors/Colors';
 import { Formik } from 'formik';
 import { LoginSchema } from '../schemas/LoginSchema';
 import { authenticateUser } from '../services/UserAPI';
-import {UserContext} from '../context/UserContext';
-import { useContext, useState } from 'react';
+import { useDispatch } from 'react-redux'; // Import useDispatch
+import { loginUserAction } from '../store/slices/userSlice'; // Import login action
 
 const Login = () => {
   const navigation = useNavigation();
-  const { setUser } = useContext(UserContext); // To store user data in context
+  const dispatch = useDispatch(); // Initialize dispatch
   const [errorMessage, setErrorMessage] = useState('');
+
   // Handle login
   const handleLogin = async (values) => {
     try {
@@ -20,12 +22,12 @@ const Login = () => {
       const response = await authenticateUser(values.username, values.password);
       
       if (response.message === "Authentication successful") {
-        // Store user data in context
-        setUser({
+        // Dispatch the login action with user data
+        dispatch(loginUserAction({
           firstName: response.user.firstname,
           lastName: response.user.lastname,
           username: response.user.username,
-        });
+        }));
 
         // Navigate to LoggedIn screen
         navigation.replace('LoggedIn');
@@ -40,48 +42,46 @@ const Login = () => {
 
   return (
     <SafeAreaView style={styles.container}>
-      
       {/* Background Component */}
       <Background />
       <View style={styles.contentContainer}>
-      <ScrollView contentContainerStyle={styles.scrollViewContent}>
-      <View style={styles.headerContainer}>
-        <Image 
-          source={require('../assets/icons/wallet.png')} 
-          style={styles.logo}
-        />
-        <Text style={styles.companyName}>Wallet Network</Text>
-        <Text style={styles.heading}>Login</Text>
-      </View>
-      <Formik
-      initialValues={{username:'',password:''}}
-      validationSchema={LoginSchema}
-      onSubmit={handleLogin}>
-
-        {({handleChange,handleSubmit,values,errors}) =>(
-          <View style={styles.formContainer}>
-          <FormField
-          title={'Username'}
-          placeholder={'johndoe678'}
-          onChange={handleChange('username')}
-          error={errors.username} 
-          />
-          <FormField
-          title={'Password'}
-          placeholder={'* * * * * * *'}
-          onChange={handleChange('password')}
-          secure={true}
-          error={errors.password}
-          />
-          {errorMessage ? <Text style={styles.errorText}>{errorMessage}</Text> : null}
-          <FormButton title={'Login'} onPress={handleSubmit}/>
-        </View>
-        )}
-      
-      </Formik>
-      </ScrollView>
-      {/* Footer */}
-      <FormFooter title1={"Don't have an account?"} title2={"SignUp"} onPress={() => navigation.replace('Signup')}/>
+        <ScrollView contentContainerStyle={styles.scrollViewContent}>
+          <View style={styles.headerContainer}>
+            <Image 
+              source={require('../assets/icons/wallet.png')} 
+              style={styles.logo}
+            />
+            <Text style={styles.companyName}>Wallet Network</Text>
+            <Text style={styles.heading}>Login</Text>
+          </View>
+          <Formik
+            initialValues={{username:'', password:''}}
+            validationSchema={LoginSchema}
+            onSubmit={handleLogin}
+          >
+            {({handleChange, handleSubmit, values, errors}) => (
+              <View style={styles.formContainer}>
+                <FormField
+                  title={'Username'}
+                  placeholder={'johndoe678'}
+                  onChange={handleChange('username')}
+                  error={errors.username} 
+                />
+                <FormField
+                  title={'Password'}
+                  placeholder={'* * * * * * *'}
+                  onChange={handleChange('password')}
+                  secure={true}
+                  error={errors.password}
+                />
+                {errorMessage ? <Text style={styles.errorText}>{errorMessage}</Text> : null}
+                <FormButton title={'Login'} onPress={handleSubmit}/>
+              </View>
+            )}
+          </Formik>
+        </ScrollView>
+        {/* Footer */}
+        <FormFooter title1={"Don't have an account?"} title2={"SignUp"} onPress={() => navigation.replace('Signup')}/>
       </View>
     </SafeAreaView>
   );
@@ -90,53 +90,53 @@ const Login = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'transparent', // Make sure it's transparent to see the background
+    backgroundColor: 'transparent',
   },
   headerContainer: {
-    position: 'absolute', // Position content above the background
+    position: 'absolute',
     top: 100,
     left: 0,
     right: 0,
     bottom: 0,
     alignItems: 'center',
     justifyContent: 'flex-start',
-    marginBottom:120,
+    marginBottom: 120,
   },
   logo: {
     width: 150,
     height: 150,
     tintColor: Colors.logoColor1,
   },
-  companyName:{
+  companyName: {
     color: Colors.companyName,
-    fontWeight:500,
+    fontWeight: '500',
     fontSize: 30,
   },
-  heading:{
-    marginTop:'5%',
-    fontWeight:800,
-    color:Colors.headingColor1,
+  heading: {
+    marginTop: '5%',
+    fontWeight: '800',
+    color: Colors.headingColor1,
     fontSize: 45,
   },
   contentContainer: {
-    position: 'absolute', // Position content above the background
+    position: 'absolute',
     top: 0,
     left: 0,
     right: 0,
     bottom: 0,
-    justifyContent: 'space-between', // Ensures footer is at the bottom
+    justifyContent: 'space-between',
     paddingHorizontal: '5%',
     paddingVertical: '5%',
   },
   formContainer: {
     flex: 1,
-    marginTop:'100%',
+    marginTop: '100%',
     justifyContent: 'center',
-    alignItems:'center'
+    alignItems: 'center',
   },
   scrollViewContent: {
-    flexGrow: 1, // Makes the content scrollable
-    justifyContent: 'space-between', // Ensures footer stays at the bottom
+    flexGrow: 1,
+    justifyContent: 'space-between',
   },
   errorText: {
     color: 'red',
@@ -146,4 +146,3 @@ const styles = StyleSheet.create({
 });
 
 export default Login;
-

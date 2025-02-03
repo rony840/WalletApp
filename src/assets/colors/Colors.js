@@ -5,7 +5,7 @@ export const Colors = {
     formLabel:'rgba(255, 255, 255, 0.86)',
     formInputBorder:'rgba(255, 255, 255, 0.86)',
     formInputTxt:'rgb(255, 255, 255)',
-    formInputError:'rgb(255, 95, 95)',
+    formInputError:'rgb(192, 228, 255)',
     formButtonTxt:'rgb(255, 255, 255)',
     formButtonBG:'rgb(94, 112, 234))',
     logoColor1: 'rgb(200, 207, 255))',

@@ -1,15 +1,16 @@
-import { StyleSheet, SafeAreaView, View, Text } from 'react-native';
+import { StyleSheet, SafeAreaView, View, Text, Alert } from 'react-native';
 import { Background } from '../components/Components';
 import TextDisplay from '../components/TextDisplay';
 import TransactionButton from '../components/TransactionButton';
 import { useNavigation } from '@react-navigation/native';
-import { useContext } from 'react';
-import { UserContext } from '../context/UserContext'; // User context to clear user data
+import { useDispatch, useSelector } from 'react-redux';
+import { deleteUserAction } from '../store/slices/userSlice';
 import { deleteUserAccount } from '../services/UserAPI'; // API call to delete user account
 
 const DeleteAcc = () => {
   const navigation = useNavigation();
-  const { user, setUser } = useContext(UserContext); // Access the user data from context
+  const dispatch = useDispatch();
+  const user = useSelector((state) => state.user.user); // Access user data from Redux store
 
   // Handle account deletion
   const handleDeleteAccount = async () => {
@@ -18,12 +19,12 @@ const DeleteAcc = () => {
       const response = await deleteUserAccount(user.username);
       console.log('Delete Account Response:', response);
 
-      // Clear user data from context (log out the user)
-      setUser(null);
+      // Clear user data from Redux store (log out the user)
+      dispatch(deleteUserAction()); // Dispatch the logout action to clear user data
 
       // Optionally, clear any tokens from AsyncStorage if used
       // await AsyncStorage.removeItem('auth_token'); // If you're storing tokens
-
+      Alert.alert('Your account has been deleted Successfully!')
       // Redirect to the login screen after successful deletion
       navigation.replace('Login'); // Navigate to the login screen
     } catch (error) {

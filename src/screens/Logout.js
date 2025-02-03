@@ -1,29 +1,29 @@
-import { StyleSheet, SafeAreaView, View, Text } from 'react-native';
+import { StyleSheet, SafeAreaView, View, Text, Alert } from 'react-native';
 import { Background } from '../components/Components';
 import TextDisplay from '../components/TextDisplay';
 import TransactionButton from '../components/TransactionButton';
 import { useNavigation } from '@react-navigation/native';
-import { useContext } from 'react';
-import { UserContext } from '../context/UserContext';
+import { useDispatch } from 'react-redux';
+import { logoutUserAction } from '../store/slices/userSlice';
 import { logoutUser } from '../services/UserAPI'; // Import your logout API function
 
 const Logout = () => {
   const navigation = useNavigation();
-  const { setUser } = useContext(UserContext); // Use context to clear user data
+  const dispatch = useDispatch();
 
   // Function to handle logout
   const handleLogout = async () => {
     try {
       // Call logout API
       const response = await logoutUser();
-      console.log('Logout successful:', response);
 
-      // Clear user data from context
-      setUser(null); // This will clear the user data in context
+      // Clear user data from Redux store
+      dispatch(logoutUserAction()); // Dispatch logout action to clear user data
 
       // Optionally clear any tokens from AsyncStorage or local storage (if used)
       // Example: await AsyncStorage.removeItem('auth_token');
-
+      console.log('Logout successful:', response);
+      Alert.alert('You have been logged out successfully');
       // Redirect to login screen
       navigation.replace('Login');  // Replace the current screen with login screen
     } catch (error) {

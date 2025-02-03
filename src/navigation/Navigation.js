@@ -7,9 +7,8 @@ import { createMaterialTopTabNavigator } from '@react-navigation/material-top-ta
 import { Image, SafeAreaView } from 'react-native';
 import EditProfile from '../screens/EditProfile';
 import Heading from '../components/Heading'; // Custom Heading component
-import { UserContext } from '../context/UserContext';
 import DeleteAcc from '../screens/DeleteAcc';
-
+import { useSelector } from 'react-redux';
 // Stack Navigator for Login, Signup, and Welcome (Static Flow)
 const Stack = createNativeStackNavigator();
 
@@ -77,9 +76,10 @@ const MyTabs = () => {
 // Drawer Navigation
 const Drawer = createDrawerNavigator();
 
-// Drawer Navigation
 function DrawerTab() {
-  const { user } = useContext(UserContext);
+  const user = useSelector((state) => state.user.user); // Fetch user data from Redux state
+  const { firstName, lastName } = user || {}; // Destructure firstName and lastName
+  
   return (
     <Drawer.Navigator
       screenOptions={{
@@ -102,14 +102,17 @@ function DrawerTab() {
             iconClickEnabled = false; // Disable icon click on Edit Profile screen
           }
 
-          return (<SafeAreaView>
-          <Heading 
-          heading={headingText}
-          type={'Profile'}
-          name1={user?.firstName || 'Guest'}
-          name2={user?.lastName || 'User'}
-          iconClickEnabled={iconClickEnabled} />
-          </SafeAreaView>);
+          return (
+            <SafeAreaView>
+              <Heading
+                heading={headingText}
+                type={'Profile'}
+                name1={firstName || 'Guest'}
+                name2={lastName || 'User'}
+                iconClickEnabled={iconClickEnabled}
+              />
+            </SafeAreaView>
+          );
         },
       }}
     >

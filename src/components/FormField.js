@@ -1,7 +1,8 @@
 import {View,Text,StyleSheet, TextInput} from 'react-native';
+import { Colors } from '../assets/colors/Colors';
 
 const FormField = props => {
-    const {title,onChange,placeholder,value1,error} = props;
+    const {title,editable,onChange,placeholder,value1,error,secure} = props;
     return(
         <View style={styles.container}>
             <View style={styles.txtCont}>
@@ -16,8 +17,9 @@ const FormField = props => {
               clearButtonMode="while-editing"
               onChangeText={onChange}
               placeholder={placeholder||"Enter your placeholder"}
-              placeholderTextColor="#d9d8d7"
-              secureTextEntry={false}
+              placeholderTextColor={Colors.formPlaceholder}
+              secureTextEntry={secure}
+              editable={editable}
               style={{...styles.txtInput}}
                />
         </View>
@@ -26,13 +28,12 @@ const FormField = props => {
 
 const styles = StyleSheet.create({
     container:{
-        backgroundColor:'white',
+        backgroundColor:Colors.formFieldBG,
         borderRadius:20,
         padding:10,
-        height: 85,
+        height: 100,
+        Width:'100%',
         marginBottom: 20,
-        marginLeft:'5%',
-        marginRight:'5%',
 
     },
     txtCont:{
@@ -41,27 +42,26 @@ const styles = StyleSheet.create({
         justifyContent:'space-between'
     },
     frmLabel:{
-        fontSize: 18,
+        fontSize: 16,
         fontWeight: '600',
-        color: '#222',
+        color: Colors.formLabel,
         marginLeft: 15,
     },
     txtInput:{
         height: 50,
-        backgroundColor: '#fff',
+        width: 320,
         paddingHorizontal: 16,
         borderRadius: 12,
         fontSize: 20,
         fontWeight: '800',
-        color: '#222',
-        borderColor: '#C9D3DB',
-        borderStyle: 'solid',
-        placeholderTextColor: 'white',
+        color: Colors.formInputTxt,
+        borderBottomWidth:1,
+        borderBottomColor: Colors.formInputBorder,
     },
     frmErr:{
         fontSize: 14,
         fontWeight: '400',
-        color: 'red',
+        color: Colors.formInputError,
         marginLeft: 10,
     },
 });

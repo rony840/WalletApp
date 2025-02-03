@@ -1,36 +1,47 @@
-import { StyleSheet, SafeAreaView, View, ScrollView } from 'react-native';
-import { FormButton, FormField, Background } from '../components/Components';
-//import { useNavigation } from '@react-navigation/native';
-//import { Formik } from 'formik';
+import { StyleSheet, SafeAreaView, View, Text } from 'react-native';
+import { Background } from '../components/Components';
+import TextDisplay from '../components/TextDisplay';
+import TransactionButton from '../components/TransactionButton';
+import { useNavigation } from '@react-navigation/native';
+import { useContext } from 'react';
+import { UserContext } from '../context/UserContext';
+import { logoutUser } from '../services/UserAPI'; // Import your logout API function
 
 const Logout = () => {
+  const navigation = useNavigation();
+  const { setUser } = useContext(UserContext); // Use context to clear user data
+
+  // Function to handle logout
+  const handleLogout = async () => {
+    try {
+      // Call logout API
+      const response = await logoutUser();
+      console.log('Logout successful:', response);
+
+      // Clear user data from context
+      setUser(null); // This will clear the user data in context
+
+      // Optionally clear any tokens from AsyncStorage or local storage (if used)
+      // Example: await AsyncStorage.removeItem('auth_token');
+
+      // Redirect to login screen
+      navigation.replace('Login');  // Replace the current screen with login screen
+    } catch (error) {
+      console.error('Error logging out:', error);
+    }
+  };
 
   return (
     <SafeAreaView style={styles.container}>
-      
-      {/* Background Component */}
       <Background />
-      
-      <View style={styles.logoContainer}>
-      </View>
       <View style={styles.contentContainer}>
-      <ScrollView contentContainerStyle={styles.scrollViewContent}>
-            <View style={styles.formContainer}>
-            <FormField
-            title={'Email'}
-            placeholder={'johndoe@example.com'}
-            onChange={()=>{}}
-            
-            />
-            <FormField
-            title={'Password'}
-            placeholder={'* * * * * * *'}
-            onChange={()=>{}}
-           
-            />
-            <FormButton title={'Login'} onPress={()=>{}}/>
+        <View style={styles.bodyContainer}>
+          <TextDisplay txt={'Are you sure you want to log out?'} />
+          <View style={styles.btnCont}>
+            <TransactionButton title={'NO'} onPress={() => navigation.goBack()} />
+            <TransactionButton title={'YES'} onPress={handleLogout} />
           </View>
-      </ScrollView>
+        </View>
       </View>
     </SafeAreaView>
   );
@@ -51,22 +62,15 @@ const styles = StyleSheet.create({
     paddingHorizontal: '5%',
     paddingVertical: '5%',
   },
-  header: {
-    marginTop:"90%",
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginBottom: 50, // Adjust for spacing between header and form
-  },
-  formContainer: {
+  bodyContainer: {
     flex: 1,
-    marginTop:'-5%',
+    marginTop: '25%',
     justifyContent: 'center',
+    alignItems: 'center',
   },
-  scrollViewContent: {
-    flexGrow: 1, // Makes the content scrollable
-    justifyContent: 'space-between', // Ensures footer stays at the bottom
+  btnCont: {
+    marginTop: '20%',
   },
 });
 
 export default Logout;
-

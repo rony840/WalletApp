@@ -1,29 +1,17 @@
 import {View, StyleSheet} from 'react-native';
+import { Colors } from '../assets/colors/Colors';
 
 const Background = props => {
     const {style2} = props;
     return(
-        <View style={styles.outer}>
-            <View style={styles.inner1}/>
-            <View style={{...styles.inner2,...style2}}/>
-        </View>
+        <View style={styles.outer}/>
     );
 };
 
 const styles = StyleSheet.create({
     outer:{
         flex:1,
-        backgroundColor:'black', 
-    },
-    inner1:{
-        flex:1,
-        backgroundColor:'#00000000',
-        borderTopLeftRadius: 0,
-    },
-    inner2:{
-        flex:2,
-        backgroundColor:'#f7f7f7',
-        borderTopLeftRadius: 75,
+        backgroundColor:Colors.appBackground, 
     },
 
 });

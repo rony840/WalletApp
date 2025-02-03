@@ -1,7 +1,7 @@
 import { StyleSheet, View, Text, TouchableOpacity } from "react-native";
 import { Colors } from "../assets/colors/Colors";
 
-const FormButton = props =>{
+const TransactionButton = props =>{
     const {btStyle,title,btTxt,onPress} = props;
     return(
         <TouchableOpacity
@@ -18,7 +18,7 @@ const styles = StyleSheet.create({
         flexDirection:'row',
         justifyContent: 'center',
         height:60,
-        width:150,
+        width:250,
         borderRadius:10,
         backgroundColor: Colors.formButtonBG,
         marginBottom: 20
@@ -31,4 +31,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default FormButton;
+export default TransactionButton;

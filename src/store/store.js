@@ -1,6 +1,11 @@
 import { configureStore } from '@reduxjs/toolkit';
 import { createLogger } from 'redux-logger';  // Import the logger
+import createSagaMiddleware from 'redux-saga';
 import userReducer from './slices/userSlice';
+import { userSaga } from './sagas/userSaga';
+
+//creating instance of sagamiddleware
+const sagaMiddleware = createSagaMiddleware();
 
 // Creating the logger middleware instance
 const logger = createLogger({
@@ -14,5 +19,7 @@ export const store = configureStore({
     user: userReducer,
   },
   middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat(logger)
+    getDefaultMiddleware().concat(logger,sagaMiddleware)
 });
+
+sagaMiddleware.run(userSaga);

@@ -3,22 +3,27 @@ import { Background } from '../components/Components';
 import TextDisplay from '../components/TextDisplay';
 import TransactionButton from '../components/TransactionButton';
 import { useNavigation } from '@react-navigation/native';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { logoutUserAction } from '../store/slices/userSlice';
-import { logoutUser } from '../services/UserAPI'; // Import your logout API function
+import { useEffect } from 'react';
 
 const Logout = () => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
+  const { isLogout } = useSelector((state) => state.user); // Access loading and error states from the Redux store
+
+  useEffect(() => {
+    if (isLogout) {
+      navigation.replace('Login');  // Navigate to the logged-in screen
+    }
+  }, [isLogout, navigation]); 
 
   // Function to handle logout
   const handleLogout = async () => {
     try {
-      // Call logout API
-      const response = await logoutUser();
 
       // Clear user data from Redux store
-      dispatch(logoutUserAction()); // Dispatch logout action to clear user data
+      dispatch(logoutUserAction());
 
       // Optionally clear any tokens from AsyncStorage or local storage (if used)
       // Example: await AsyncStorage.removeItem('auth_token');

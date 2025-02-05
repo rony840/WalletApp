@@ -83,7 +83,8 @@ function DrawerTab() {
   return (
     <Drawer.Navigator
       screenOptions={{
-        headerShown: true, // Show header
+        
+        headerBackground:'red',
         header: ({ route }) => {
           // Dynamically change the header based on the screen name
           const { name } = route;

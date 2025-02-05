@@ -4,7 +4,7 @@
  *
  * @format
  */
-
+import './gesture-handler';
 import React from 'react';
 import { StyleSheet } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';

@@ -18,10 +18,9 @@ const Logout = () => {
       const response = await logoutUser();
 
       // Clear user data from Redux store
-      dispatch(logoutUserAction()); // Dispatch logout action to clear user data
+      dispatch(logoutUserAction());
 
-      // Optionally clear any tokens from AsyncStorage or local storage (if used)
-      // Example: await AsyncStorage.removeItem('auth_token');
+      
       console.log('Logout successful:', response);
       Alert.alert('You have been logged out successfully');
       // Redirect to login screen

@@ -3,6 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
     user: {username: "", firstName: "", lastName: "" },
     isAuthenticated: false,
+    isDelete: false,
     updated: false,
     signup: false,
     loading: false,  // Add a loading state to handle async operations
@@ -25,11 +26,11 @@ const userSlice = createSlice({
             state.updated = true;
         },
         logoutUserAction: (state) => {
-            state.user = null;
+            state.user = {username: "", firstName: "", lastName: "" },
             state.isAuthenticated = false;
         },
         deleteUserAction: (state) => {
-            state.user = null;
+            state.user = {username: "", firstName: "", lastName: "" },
             state.isAuthenticated = false;
         },
         fetchUserAction: (state, action) => {

@@ -103,8 +103,13 @@ function* deleteUserSaga(action) {
   try {
     yield put(startLoading());
     const response = yield call(deleteUserAccount, action.payload.username);
-    yield put(deleteUserAction(response));  // Dispatch delete action
-    yield put(stopLoading());
+    if (response.message == "User deleted successfully!") {
+      yield put(stopLoading());
+      yield put(setError(null));
+    }
+    else{
+      yield put(setError('Error logging out'));
+    }
   } catch (error) {
     yield put(setError(error.message));
     yield put(stopLoading());
@@ -115,8 +120,14 @@ function* logoutUserSaga() {
   try {
     yield put(startLoading());
     const response = yield call(logoutUser);
-    yield put(logoutUserAction(response)); // Dispatch logout action
-    yield put(stopLoading());
+    // If successful login
+    if (response.message == "Logged out successfully!") {
+      yield put(stopLoading());
+      yield put(setError(null));
+    }
+    else{
+      yield put(setError('Error logging out'));
+    }
   } catch (error) {
     yield put(setError(error.message));
     yield put(stopLoading());

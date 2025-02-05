@@ -10,12 +10,13 @@ import { useEffect } from 'react';
 const Logout = () => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
-  const { isAuthenticated } = useSelector((state) => state.user); // Access loading and error states from the Redux store
+  const { isAuthenticated, user } = useSelector((state) => state.user); // Access loading and error states from the Redux store
 
   useEffect(() => {
     if (!isAuthenticated) {
       Alert.alert('You have been logged out successfully');
       navigation.replace('Login');  // Navigate to the logged-in screen
+      console.log('user state in logout:',user)
     }
   }, [isAuthenticated, navigation]); 
 
@@ -23,15 +24,8 @@ const Logout = () => {
   const handleLogout = async () => {
     try {
 
-      // Clear user data from Redux store
       dispatch(logoutUserAction());
 
-      // Optionally clear any tokens from AsyncStorage or local storage (if used)
-      // Example: await AsyncStorage.removeItem('auth_token');
-      //console.log('Logout successful:', response);
-      
-      // Redirect to login screen
-      //navigation.replace('Login');  // Replace the current screen with login screen
     } catch (error) {
       console.error('Error logging out:', error);
     }

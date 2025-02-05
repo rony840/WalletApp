@@ -23,7 +23,6 @@ const EditProfile = () => {
       navigation.replace('LoggedIn');  // Navigate to the logged-in screen
     }
 
-    // Make sure the username exists before fetching
     if (user.username) {
       dispatch(fetchUserAction({ username: user.username })); // Dispatch action to fetch user data
     }

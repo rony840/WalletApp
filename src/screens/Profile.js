@@ -2,16 +2,18 @@ import { StyleSheet, SafeAreaView, View} from 'react-native';
 import { Background } from '../components/Components';
 import ProfileCard from '../components/ProfileCard';
 import TransactionButton from '../components/TransactionButton';
+import { useSelector } from 'react-redux';
 
 const Profile = () => {
-
+  const user = useSelector((state) => state.user.user); // Fetch user data from Redux state
+  const { walletBalance, credit, debit } = user || {}; // Destructure firstName and lastName
   return (
     <SafeAreaView style={styles.container}>
       {/* Background Component */}
       <Background />
       <View style={styles.contentContainer}>
         <View style={styles.bodyContainer}>
-          <ProfileCard/>
+          <ProfileCard bal={walletBalance} cred={credit} deb={debit}/>
           <View style={styles.btnContainer}>
           <TransactionButton title={'Load Money'}/>
           <TransactionButton title={'Withdraw Money'}/>

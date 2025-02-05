@@ -9,7 +9,7 @@ const sagaMiddleware = createSagaMiddleware();
 
 // Creating the logger middleware instance
 const logger = createLogger({
-  collapsed: false, //set it to false to expand logs
+  collapsed: true, //set it to false to expand logs
   diff: true, //shows difference in prev and next state
 });
 

@@ -22,7 +22,7 @@ const Login = () => {
 
   // Handle login
   const handleLogin = (values) => {
-    // Dispatch the login action to trigger the saga
+    console.log('values in handle login screen: ',values)
     dispatch(loginUserAction(values));
       
   };

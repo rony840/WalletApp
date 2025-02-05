@@ -10,13 +10,14 @@ import { useEffect } from 'react';
 const Logout = () => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
-  const { isLogout } = useSelector((state) => state.user); // Access loading and error states from the Redux store
+  const { isAuthenticated } = useSelector((state) => state.user); // Access loading and error states from the Redux store
 
   useEffect(() => {
-    if (isLogout) {
+    if (!isAuthenticated) {
+      Alert.alert('You have been logged out successfully');
       navigation.replace('Login');  // Navigate to the logged-in screen
     }
-  }, [isLogout, navigation]); 
+  }, [isAuthenticated, navigation]); 
 
   // Function to handle logout
   const handleLogout = async () => {
@@ -27,10 +28,10 @@ const Logout = () => {
 
       // Optionally clear any tokens from AsyncStorage or local storage (if used)
       // Example: await AsyncStorage.removeItem('auth_token');
-      console.log('Logout successful:', response);
-      Alert.alert('You have been logged out successfully');
+      //console.log('Logout successful:', response);
+      
       // Redirect to login screen
-      navigation.replace('Login');  // Replace the current screen with login screen
+      //navigation.replace('Login');  // Replace the current screen with login screen
     } catch (error) {
       console.error('Error logging out:', error);
     }

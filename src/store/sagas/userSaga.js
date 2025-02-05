@@ -1,7 +1,7 @@
 // userSaga.js
 import { takeLatest, call, put } from 'redux-saga/effects';
 import { startLoading, stopLoading, setError, 
-         signupUserAction, loginUserAction, updateUserAction, 
+         signupUserAction, loginUserAction, updateUserAction, logoutUserAction,
          fetchUserAction, deleteUserAction } from '../slices/userSlice';
 import { 
   signUpUser, 
@@ -41,13 +41,16 @@ function* signupUserSaga(action) {
 function* loginUserSaga(action) {
     try {
       yield put(startLoading()); // Start loading
-  
+      console.log('user in login saga: ',action.payload.username)
+      console.log('pass in login saga: ',action.payload.password)
       // Call API for authentication
       const response = yield call(authenticateUser, action.payload.username, action.payload.password);
+      console.log('response in saga',response)
       console.log('response in saga',response.message)
       // If successful login
       if (response.message == "Authentication successful") {
         yield put(fetchUserAction({
+          isAuthenticated: true,
           firstName: response.user.firstname,
           lastName: response.user.lastname,
           username: response.user.username,

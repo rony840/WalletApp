@@ -3,8 +3,8 @@ import { Background } from '../components/Components';
 import Heading from '../components/Heading';
 import { Colors } from '../assets/colors/Colors';
 
-const ProfileCard = () => {
-
+const ProfileCard = (props) => {
+ const {bal,cred, deb} = props;
   return (
     <View style={styles.container}>
       <Text style={styles.greetTxt}>
@@ -15,14 +15,14 @@ const ProfileCard = () => {
       </Text>
       <View style={styles.moneyCont}>
       <Text style={styles.balance}>
-        $ 800.00
+        {'$'+(bal||'NA')}
       </Text>
         <View style={styles.moneyFlowCont}>
         <Text style={styles.credit}>
-        +$ 200.00
+        {'$ +'+(cred||'NA')}
       </Text>
       <Text style={styles.debit}>
-        -$ 500.00
+      {'$ -'+(deb||'NA')}
       </Text>
         </View>
       </View>

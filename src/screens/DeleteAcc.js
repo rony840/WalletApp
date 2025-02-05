@@ -1,35 +1,31 @@
-import { StyleSheet, SafeAreaView, View, Text, Alert } from 'react-native';
+import { StyleSheet, SafeAreaView, View, Alert } from 'react-native';
 import { Background } from '../components/Components';
 import TextDisplay from '../components/TextDisplay';
 import TransactionButton from '../components/TransactionButton';
 import { useNavigation } from '@react-navigation/native';
 import { useDispatch, useSelector } from 'react-redux';
 import { deleteUserAction } from '../store/slices/userSlice';
-import { deleteUserAccount } from '../services/UserAPI'; // API call to delete user account
+import { useEffect } from 'react';
 
 const DeleteAcc = () => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
-  const user = useSelector((state) => state.user.user); // Access user data from Redux store
+  const {user,isAuthenticated} = useSelector((state) => state.user); 
+
+  useEffect(() => {
+      if (!isAuthenticated) {
+        Alert.alert('Your Account has been Deleted successfully');
+        navigation.replace('Login');  // Navigate to the logged-in screen
+        console.log('user state in delete:',user)
+      }
+    }, [isAuthenticated, navigation]); 
 
   // Handle account deletion
   const handleDeleteAccount = async () => {
     try {
-      // Call the delete user API
-      const response = await deleteUserAccount(user.username);
-      console.log('Delete Account Response:', response);
-
-      // Clear user data from Redux store (log out the user)
-      dispatch(deleteUserAction()); // Dispatch the logout action to clear user data
-
-      // Optionally, clear any tokens from AsyncStorage if used
-      // await AsyncStorage.removeItem('auth_token'); // If you're storing tokens
-      Alert.alert('Your account has been deleted Successfully!')
-      // Redirect to the login screen after successful deletion
-      navigation.replace('Login'); // Navigate to the login screen
+      dispatch(deleteUserAction({ username: user.username })); 
     } catch (error) {
       console.error('Error deleting account:', error);
-      // Handle any error (e.g., show an error message)
     }
   };
 

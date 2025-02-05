@@ -1,4 +1,3 @@
-import React, { useContext } from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Logout, Login, Signup, Transaction, Sent, Profile, Received } from '../screens/Screens';

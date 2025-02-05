@@ -1,11 +1,10 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { StyleSheet, SafeAreaView, View, ScrollView, Alert } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Formik } from 'formik';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { signupUserAction } from '../store/slices/userSlice'; // Import signup action
-import { signUpUser } from '../services/UserAPI'; // API call
 import { FormButton, FormField, Background } from '../components/Components';
 import Heading from '../components/Heading';
 import FormFooter from '../components/FormFooter';
@@ -15,9 +14,17 @@ const Signup = () => {
   const dispatch = useDispatch(); // Redux dispatch hook
   const navigation = useNavigation();
   const insets = useSafeAreaInsets();
+  const { signup } = useSelector((state) => state.user);
+
+  useEffect(() => {
+      if (signup) {
+        Alert.alert('User profile created!')
+        navigation.replace('Login');  // Navigate to the logged-in screen
+      }
+    }, [signup, navigation]); // Trigger effect when isAuthenticated changes
 
   // Handle form submission
-  const handleSubmit = async (values) => {
+  const handleSubmit = (values) => {
     try {
       // Extract values from the form
       const { firstName, lastName, username, email, contact, password } = values;
@@ -32,23 +39,12 @@ const Signup = () => {
         password,
       };
 
-      // Make the API call to sign up the user
-      const response = await signUpUser(userData);
+      // Dispatch the signupUserAction to trigger the saga
+      dispatch(signupUserAction(userData));
 
-      // Handle the response (e.g., show success message or navigate)
-      if (response && response.message === 'User added successfully!') {
-        // If signup is successful, update Redux state
-        dispatch(signupUserAction(response.user)); // Dispatch signup action with user data
-
-        Alert.alert('Your account has been created successfully! Please login using the credentials.');
-        navigation.replace('Login'); // Navigate to the login page
-      } else {
-        console.log(response.message);
-        Alert.alert('Error1', response.message || 'Something went wrong');
-      }
     } catch (error) {
       console.log(error);
-      Alert.alert('Error2', error.message || 'Something went wrong');
+      Alert.alert('Error', error.message || 'Something went wrong');
     }
   };
 
@@ -82,13 +78,13 @@ const Signup = () => {
               <View style={styles.formContainer}>
                 <FormField
                   title={'First Name'}
-                  placeholder={'johndoe678'}
+                  placeholder={'John'}
                   onChange={handleChange('firstName')}
                   error={errors.firstName} 
                 />
                 <FormField
                   title={'Last Name'}
-                  placeholder={'johndoe678'}
+                  placeholder={'Doe'}
                   onChange={handleChange('lastName')}
                   error={errors.lastName} 
                 />
@@ -100,26 +96,26 @@ const Signup = () => {
                 />
                 <FormField
                   title={'Email'}
-                  placeholder={'johndoe678'}
+                  placeholder={'johndoe@example.com'}
                   onChange={handleChange('email')}
                   error={errors.email} 
                 />
                 <FormField
                   title={'Contact'}
-                  placeholder={'johndoe678'}
+                  placeholder={'+1 123 456 7890'}
                   onChange={handleChange('contact')}
                   error={errors.contact} 
                 />
                 <FormField
                   title={'Password'}
-                  placeholder={'johndoe678'}
+                  placeholder={'*******'}
                   onChange={handleChange('password')}
                   error={errors.password}
                   secure={true} 
                 />
                 <FormField
-                  title={'Password'}
-                  placeholder={'johndoe678'}
+                  title={'Confirm Password'}
+                  placeholder={'*******'}
                   onChange={handleChange('confirmPassword')}
                   error={errors.confirmPassword}
                   secure={true} 

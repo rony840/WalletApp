@@ -1,8 +1,11 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-    user: null,
+    user: {username: "", firstName: "", lastName: "" },
     isAuthenticated: false,
+    isDelete: false,
+    updated: false,
+    signup: false,
     loading: false,  // Add a loading state to handle async operations
     error: null,     // Optional: Add an error state for error handling
 };
@@ -13,22 +16,21 @@ const userSlice = createSlice({
     reducers: {
         signupUserAction: (state, action) => {
             state.user = action.payload;
-            state.isAuthenticated = true;
+            state.signup = true;
         },
         loginUserAction: (state, action) => {
             state.user = action.payload;
-            state.isAuthenticated = true;
         },
         updateUserAction: (state, action) => {
             state.user = action.payload;
-            state.isAuthenticated = true;
+            state.updated = true;
         },
         logoutUserAction: (state) => {
-            state.user = null;
+            state.user = {username: "", firstName: "", lastName: "" },
             state.isAuthenticated = false;
         },
         deleteUserAction: (state) => {
-            state.user = null;
+            state.user = {username: "", firstName: "", lastName: "" },
             state.isAuthenticated = false;
         },
         fetchUserAction: (state, action) => {

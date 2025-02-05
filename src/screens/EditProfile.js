@@ -1,44 +1,37 @@
+import React, { useEffect } from 'react';
 import { StyleSheet, SafeAreaView, View, ScrollView, ActivityIndicator, Alert } from 'react-native';
 import { FormButton, FormField, Background } from '../components/Components';
 import { useNavigation } from '@react-navigation/native';
 import FormFooter from '../components/FormFooter';
 import { Formik } from 'formik';
 import { UpdateUserSchema } from '../schemas/UpdateUserSchema';
-import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchUserData, updateUserProfile } from '../services/UserAPI';
 import { fetchUserAction, updateUserAction, startLoading, stopLoading, setError } from '../store/slices/userSlice';
 import { Colors } from '../assets/colors/Colors';
 
 const EditProfile = () => {
   const dispatch = useDispatch();
-  const user = useSelector((state) => state.user.user);
-  const loading = useSelector((state) => state.user.loading);
+  const user = useSelector((state) => state.user.user); // Access user data from Redux
+  const loading = useSelector((state) => state.user.loading); // Loading state
   const navigation = useNavigation();
+  const { updated } = useSelector((state) => state.user);
 
-  // Fetch user data once when component mounts
+  // Fetch user data when the component mounts
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        dispatch(startLoading());
-        const response = await fetchUserData(user.username); // Fetch user data
-        if (response && response.data) {
-          dispatch(fetchUserAction(response.data)); // Store the fetched user data in Redux
-        }
-      } catch (error) {
-        dispatch(setError('Failed to fetch user data'));
-        console.error('Error fetching user data:', error);
-      } finally {
-        dispatch(stopLoading());
-      }
-    };
 
-    fetchData();
-  }, [dispatch, user.username]);
+    if (updated) {
+      navigation.replace('LoggedIn');  // Navigate to the logged-in screen
+    }
 
-  const handleUpdateProfile = async (values) => {
+    if (user.username) {
+      dispatch(fetchUserAction({ username: user.username })); // Dispatch action to fetch user data
+    }
+  }, [dispatch, user.username,updated,navigation]);
+
+  const handleUpdateProfile = (values) => {
     try {
       dispatch(startLoading());
+
       const updatedData = {
         firstname: values.firstName,
         lastname: values.lastName,
@@ -48,14 +41,11 @@ const EditProfile = () => {
         password: values.newPassword,
       };
 
-      const response = await updateUserProfile(user.username, updatedData);
-      if (response.message === 'User profile updated successfully!') {
-        dispatch(updateUserAction(updatedData)); // Only update the changed fields
-        Alert.alert('Your profile has been updated!');
-        navigation.replace('LoggedIn');
-      } else {
-        console.error('Error updating profile');
-      }
+      // Dispatch the update action to trigger the saga
+      dispatch(updateUserAction({ username: user.username, updatedData }));
+
+      // Optional: You can handle navigation here if you want
+      navigation.replace('LoggedIn');
     } catch (error) {
       dispatch(setError('Failed to update user data'));
       console.error('Error updating profile:', error);

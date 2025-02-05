@@ -3,28 +3,29 @@ import { Background } from '../components/Components';
 import TextDisplay from '../components/TextDisplay';
 import TransactionButton from '../components/TransactionButton';
 import { useNavigation } from '@react-navigation/native';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { logoutUserAction } from '../store/slices/userSlice';
-import { logoutUser } from '../services/UserAPI'; // Import your logout API function
+import { useEffect } from 'react';
 
 const Logout = () => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
+  const { isAuthenticated, user } = useSelector((state) => state.user); // Access loading and error states from the Redux store
+
+  useEffect(() => {
+    if (!isAuthenticated) {
+      Alert.alert('You have been logged out successfully');
+      navigation.replace('Login');  // Navigate to the logged-in screen
+      console.log('user state in logout:',user)
+    }
+  }, [isAuthenticated, navigation]); 
 
   // Function to handle logout
   const handleLogout = async () => {
     try {
-      // Call logout API
-      const response = await logoutUser();
 
-      // Clear user data from Redux store
       dispatch(logoutUserAction());
 
-      
-      console.log('Logout successful:', response);
-      Alert.alert('You have been logged out successfully');
-      // Redirect to login screen
-      navigation.replace('Login');  // Replace the current screen with login screen
     } catch (error) {
       console.error('Error logging out:', error);
     }

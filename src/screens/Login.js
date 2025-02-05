@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect } from 'react';
 import { StyleSheet, SafeAreaView, View, ScrollView, Image, Text } from 'react-native';
 import { FormButton, FormField, Background } from '../components/Components';
 import { useNavigation } from '@react-navigation/native';
@@ -6,38 +6,25 @@ import FormFooter from '../components/FormFooter';
 import { Colors } from '../assets/colors/Colors';
 import { Formik } from 'formik';
 import { LoginSchema } from '../schemas/LoginSchema';
-import { authenticateUser } from '../services/UserAPI';
-import { useDispatch } from 'react-redux'; // Import useDispatch
-import { loginUserAction } from '../store/slices/userSlice'; // Import login action
+import { useDispatch, useSelector } from 'react-redux'; // Import useDispatch and useSelector
+import { loginUserAction } from '../store/slices/userSlice'; // Import necessary actions
 
 const Login = () => {
   const navigation = useNavigation();
   const dispatch = useDispatch(); // Initialize dispatch
-  const [errorMessage, setErrorMessage] = useState('');
+  const { loading, error, isAuthenticated } = useSelector((state) => state.user); // Access loading and error states from the Redux store
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigation.replace('LoggedIn');  // Navigate to the logged-in screen
+    }
+  }, [isAuthenticated, navigation]); // Trigger effect when isAuthenticated changes
 
   // Handle login
-  const handleLogin = async (values) => {
-    try {
-      // Call the API to authenticate the user
-      const response = await authenticateUser(values.username, values.password);
+  const handleLogin = (values) => {
+    console.log('values in handle login screen: ',values)
+    dispatch(loginUserAction(values));
       
-      if (response.message === "Authentication successful") {
-        // Dispatch the login action with user data
-        dispatch(loginUserAction({
-          firstName: response.user.firstname,
-          lastName: response.user.lastname,
-          username: response.user.username,
-        }));
-
-        // Navigate to LoggedIn screen
-        navigation.replace('LoggedIn');
-      } else {
-        setErrorMessage('Invalid username or password');
-      }
-    } catch (error) {
-      console.error('Login error:', error);
-      setErrorMessage('An error occurred during login. Please try again.');
-    }
   };
 
   return (
@@ -55,11 +42,11 @@ const Login = () => {
             <Text style={styles.heading}>Login</Text>
           </View>
           <Formik
-            initialValues={{username:'', password:''}}
+            initialValues={{username: '', password: ''}}
             validationSchema={LoginSchema}
             onSubmit={handleLogin}
           >
-            {({handleChange, handleSubmit, values, errors}) => (
+            {({ handleChange, handleSubmit, values, errors }) => (
               <View style={styles.formContainer}>
                 <FormField
                   title={'Username'}
@@ -74,14 +61,15 @@ const Login = () => {
                   secure={true}
                   error={errors.password}
                 />
-                {errorMessage ? <Text style={styles.errorText}>{errorMessage}</Text> : null}
-                <FormButton title={'Login'} onPress={handleSubmit}/>
+                {/* Show error message from Redux state */}
+                {error && <Text style={styles.errorText}>{error}</Text>}
+                <FormButton title={'Login'} onPress={handleSubmit} disabled={loading} />
               </View>
             )}
           </Formik>
         </ScrollView>
         {/* Footer */}
-        <FormFooter title1={"Don't have an account?"} title2={"SignUp"} onPress={() => navigation.replace('Signup')}/>
+        <FormFooter title1={"Don't have an account?"} title2={"SignUp"} onPress={() => navigation.replace('Signup')} />
       </View>
     </SafeAreaView>
   );

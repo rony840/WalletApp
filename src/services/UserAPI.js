@@ -33,32 +33,15 @@ export const fetchUserData = async (username) => {
   }
 };
 
-// Update user profile
+// Example usage of PUT request
 export const updateUserProfile = async (username, updatedData) => {
   try {
-    console.log('username in api:',username)
-    console.log('updated data in api:',updatedData)
-    // Sending the username and updatedData in the correct format
-    const response = await axios.put(`${API_URL}/updateuser`, {
-        username: username, 
-        updatedData: updatedData
-      });
-    console.log('respone for update:',response)
-    return response.data;
+    const response = await put('/updateuser', { username, updatedData });
+    return response;
   } catch (error) {
     throw error;
   }
 };
-
-// // Example usage of PUT request
-// export const updateUserProfile = async (username, updatedData) => {
-//   try {
-//     const response = await put('/updateuser', { username, updatedData });
-//     return response;
-//   } catch (error) {
-//     throw error;
-//   }
-// };
 
 // Example usage of DELETE request
 export const deleteUserAccount = async (username) => {

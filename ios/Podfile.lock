@@ -1586,7 +1586,7 @@ PODS:
     - React-logger (= 0.77.0)
     - React-perflogger (= 0.77.0)
     - React-utils (= 0.77.0)
-  - RNGestureHandler (2.22.1):
+  - RNGestureHandler (2.23.0):
     - DoubleConversion
     - glog
     - hermes-engine
@@ -1974,7 +1974,7 @@ SPEC CHECKSUMS:
   fmt: a40bb5bd0294ea969aaaba240a927bd33d878cdd
   glog: eb93e2f488219332457c3c4eafd2738ddc7e80b8
   hermes-engine: 1f783c3d53940aed0d2c84586f0b7a85ab7827ef
-  RCT-Folly: 36fe2295e44b10d831836cc0d1daec5f8abcf809
+  RCT-Folly: e78785aa9ba2ed998ea4151e314036f6c49e6d82
   RCTDeprecation: f5c19ebdb8804b53ed029123eb69914356192fc8
   RCTRequired: 6ae6cebe470486e0e0ce89c1c0eabb998e7c51f4
   RCTTypeSafety: 50d6ec72a3d13cf77e041ff43a0617050fb98e3f
@@ -2034,7 +2034,7 @@ SPEC CHECKSUMS:
   ReactAppDependencyProvider: 6e8d68583f39dc31ee65235110287277eb8556ef
   ReactCodegen: c08a5113d9c9c895fe10f3c296f74c6b705a60a9
   ReactCommon: 1bd2dc684d7992acbf0dfee887b89a57a1ead86d
-  RNGestureHandler: 657b9ff1f40ee3ace3de2bcf467f86d9a6874197
+  RNGestureHandler: 0ea07666b2252aa48b192764eb21a25c60e6b6db
   RNReanimated: 8a4ea733f88a33379150eb2e73b375e14de81e84
   RNScreens: 5a1573ceb1a13b2d0663cbfb42cb4aa8803554eb
   SocketRocket: d4aabe649be1e368d1318fdf28a022d714d65748

@@ -2,33 +2,32 @@ import axios from 'axios';
 
 const API_URL = 'https://onyx-goldenrod-eater.glitch.me'; // Replace with your actual backend URL
 
-// Register new user (Sign Up)
+import { post, get, put, del } from './ClientAPI';
+
 export const signUpUser = async (userData) => {
   try {
-    const response = await axios.post(`${API_URL}/adduser`, { data: userData });
-    return response.data;
+    const response = await post('/adduser', userData);
+    return response;
   } catch (error) {
     throw error;
   }
 };
 
-// Authenticate user (Sign In)
 export const authenticateUser = async (username, password) => {
   try {
-    const response = await axios.post(`${API_URL}/authuser`, { username, password });
-    return response.data;
+    console.log('username and pass: ',username, password)
+    const response = await post('/authuser', { username, password });
+    return response;
   } catch (error) {
     throw error;
   }
 };
 
-// Fetch user data for editing profile
+/// Example usage of GET request
 export const fetchUserData = async (username) => {
   try {
-    const response = await axios.get(`${API_URL}/fetchuser`, { params: { username } });
-    console.log('fetchuser response: ',response)
-    console.log('fetchuser data response: ',response.data)
-    return response.data;
+    const response = await get('/fetchuser', { username });
+    return response;
   } catch (error) {
     throw error;
   }
@@ -51,21 +50,31 @@ export const updateUserProfile = async (username, updatedData) => {
   }
 };
 
-// Delete user account
+// // Example usage of PUT request
+// export const updateUserProfile = async (username, updatedData) => {
+//   try {
+//     const response = await put('/updateuser', { username, updatedData });
+//     return response;
+//   } catch (error) {
+//     throw error;
+//   }
+// };
+
+// Example usage of DELETE request
 export const deleteUserAccount = async (username) => {
   try {
-    const response = await axios.delete(`${API_URL}/deleteuser`, { params: { username } });
-    return response.data;
+    const response = await del('/deleteuser', { username });
+    return response;
   } catch (error) {
     throw error;
   }
 };
 
-// Logout (Optional)
+// Example usage of logout request
 export const logoutUser = async () => {
   try {
-    const response = await axios.post(`${API_URL}/logout`);
-    return response.data;
+    const response = await post('/logout');
+    return response;
   } catch (error) {
     throw error;
   }

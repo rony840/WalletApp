@@ -12,7 +12,7 @@ import { loginUserAction } from '../store/slices/userSlice'; // Import necessary
 const Login = () => {
   const navigation = useNavigation();
   const dispatch = useDispatch(); // Initialize dispatch
-  const { loading, error, isAuthenticated } = useSelector((state) => state.user); // Access loading and error states from the Redux store
+  const { loading, error, isAuthenticated, user } = useSelector((state) => state.user); // Access loading and error states from the Redux store
 
   useEffect(() => {
     if (isAuthenticated) {
@@ -22,9 +22,14 @@ const Login = () => {
 
   // Handle login
   const handleLogin = (values) => {
-    console.log('values in handle login screen: ',values)
+    console.log('values in handle login screen: ', values);
     dispatch(loginUserAction(values));
-      
+  };
+
+  // Conditionally set initialValues based on the loading state
+  const initialValues = loading ? { username: '', password: '' } : { 
+    username: user?.username || '', 
+    password: user?.password || '' 
   };
 
   return (
@@ -42,7 +47,7 @@ const Login = () => {
             <Text style={styles.heading}>Login</Text>
           </View>
           <Formik
-            initialValues={{username: '', password: ''}}
+            initialValues={initialValues} // Use the dynamically set initial values
             validationSchema={LoginSchema}
             onSubmit={handleLogin}
           >
@@ -52,6 +57,7 @@ const Login = () => {
                   title={'Username'}
                   placeholder={'johndoe678'}
                   onChange={handleChange('username')}
+                  value1={values.username}
                   error={errors.username} 
                 />
                 <FormField
@@ -59,6 +65,7 @@ const Login = () => {
                   placeholder={'* * * * * * *'}
                   onChange={handleChange('password')}
                   secure={true}
+                  value1={values.password}
                   error={errors.password}
                 />
                 {/* Show error message from Redux state */}

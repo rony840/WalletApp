@@ -10,22 +10,26 @@ import { StyleSheet } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import AppNavigation from './src/navigation/Navigation';
 import { NavigationContainer } from '@react-navigation/native';
-import { UserProvider } from './src/context/UserContext';
-import { store } from './src/store/store';
+//import { UserProvider } from './src/context/UserContext';
+import { store, persistor} from './src/store/store';
 import { Provider } from 'react-redux';
+import { PersistGate } from 'redux-persist/integration/react';
 
 
 function App(): React.JSX.Element {
 
   return (
     <Provider store={store}>
-      <UserProvider>
+      {/* PersistGate ensures Redux state is rehydrated before rendering */}
+      <PersistGate loading={null} persistor={persistor}>
+      {/* <UserProvider> */}
         <SafeAreaProvider >
           <NavigationContainer>
             <AppNavigation/>
           </NavigationContainer>
         </SafeAreaProvider>
-      </UserProvider>
+      {/* </UserProvider> */}
+      </PersistGate>
     </Provider>
     
   );

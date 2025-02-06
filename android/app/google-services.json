@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "980068589736",
+    "project_id": "walletnetwork-7cd16",
+    "storage_bucket": "walletnetwork-7cd16.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:980068589736:android:83e8b7676f45a64159a29d",
+        "android_client_info": {
+          "package_name": "com.walletnetwork"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDA5HA1ef5Ze6tpG0hxIax1isGcbqgN8g4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,7 +1,3 @@
-import axios from 'axios';
-
-const API_URL = 'https://onyx-goldenrod-eater.glitch.me'; // Replace with your actual backend URL
-
 import { post, get, put, del } from './ClientAPI';
 
 export const signUpUser = async (userData) => {

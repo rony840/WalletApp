@@ -13,7 +13,7 @@ const axiosInstance = axios.create({
 export const post = async (endpoint, data) => {
   try {
     console.log("printing data param", data)
-    const response = await axiosInstance.post(endpoint,  data);
+    const response = await axiosInstance.post(endpoint,  {data});
     console.log(response);
     return response.data;
   } catch (error) {
@@ -35,7 +35,7 @@ export const get = async (endpoint, params = {}) => {
 export const put = async (endpoint, data) => {
     console.log('data in put: ',data)
   try {
-    const response = await axiosInstance.put(endpoint, data);
+    const response = await axiosInstance.put(endpoint, {data});
     return response.data;
   } catch (error) {
     throw error;

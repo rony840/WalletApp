@@ -6,7 +6,7 @@ import { useSelector } from 'react-redux';
 
 const Profile = () => {
   const user = useSelector((state) => state.user.user); // Fetch user data from Redux state
-  const { walletBalance, credit, debit } = user || {}; // Destructure firstName and lastName
+  const { walletBalance, credit, debit } = user || {}; // Destructuring
   return (
     <SafeAreaView style={styles.container}>
       {/* Background Component */}

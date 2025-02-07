@@ -1,4 +1,3 @@
-import React, { useEffect } from 'react';
 import { StyleSheet, SafeAreaView, View, ScrollView, Image, Text } from 'react-native';
 import { FormButton, FormField, Background } from '../components/Components';
 import { useNavigation } from '@react-navigation/native';
@@ -12,14 +11,8 @@ import { loginUserAction } from '../store/slices/userSlice'; // Import necessary
 const Login = () => {
   const navigation = useNavigation();
   const dispatch = useDispatch(); // Initialize dispatch
-  const { loading, error, isAuthenticated, user } = useSelector((state) => state.user); // Access loading and error states from the Redux store
-
-  useEffect(() => {
-    if (isAuthenticated) {
-      navigation.replace('LoggedIn');  // Navigate to the logged-in screen
-    }
-  }, [isAuthenticated, navigation]); // Trigger effect when isAuthenticated changes
-
+  const { loading, error, user } = useSelector((state) => state.user); // Access loading and error states from the Redux store
+  
   // Handle login
   const handleLogin = (values) => {
     console.log('values in handle login screen: ', values);

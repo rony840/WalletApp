@@ -1,7 +1,5 @@
 import { StyleSheet, SafeAreaView, View} from 'react-native';
 import { Background } from '../components/Components';
-import { useNavigation } from '@react-navigation/native';
-import Heading from '../components/Heading';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 const Received = () => {

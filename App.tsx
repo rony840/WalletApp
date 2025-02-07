@@ -20,7 +20,6 @@ function App(): React.JSX.Element {
 
   return (
     <Provider store={store}>
-      {/* PersistGate ensures Redux state is rehydrated before rendering */}
       <PersistGate loading={null} persistor={persistor}>
       {/* <UserProvider> */}
         <SafeAreaProvider >

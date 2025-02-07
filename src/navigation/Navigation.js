@@ -11,12 +11,20 @@ import { useSelector } from 'react-redux';
 // Stack Navigator for Login, Signup, and Welcome (Static Flow)
 const Stack = createNativeStackNavigator();
 
-// Root Stack with Login, Signup, and Drawer Navigation
-const RootStack = () => {
+// auth stack
+const AuthStack = () => {
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
       <Stack.Screen name="Login" component={Login} />
       <Stack.Screen name="Signup" component={Signup} />
+    </Stack.Navigator>
+  );
+};
+
+//user stack
+const UserStack = () => {
+  return (
+    <Stack.Navigator screenOptions={{ headerShown: false }}>
       <Stack.Screen name="LoggedIn" component={DrawerTab} />
     </Stack.Navigator>
   );
@@ -100,6 +108,9 @@ function DrawerTab() {
           } else if (name === 'Logout') {
             headingText = 'Logout';
             iconClickEnabled = false; // Disable icon click on Edit Profile screen
+          } else if (name === 'Delete Account') {
+            headingText = 'Delete Account';
+            iconClickEnabled = false; // Disable icon click on Edit Profile screen
           }
 
           return (
@@ -157,7 +168,8 @@ function MyTopTabs() {
 
 // App Navigation Component
 const AppNavigation = () => {
-  return <RootStack />;
+  const { isAuthenticated } = useSelector((state) => state.user);
+  return (isAuthenticated? <UserStack/> : <AuthStack/>)
 };
 
 export default AppNavigation;

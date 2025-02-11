@@ -6,7 +6,7 @@ const axiosInstance = axios.create({
   baseURL: 'https://onyx-goldenrod-eater.glitch.me',
   headers: {
     'Content-Type': 'application/json',
-  },
+  },//can use interceptor here to add custom header for eg  auth token inside header after login
 });
 
 // POST request

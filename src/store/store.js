@@ -5,7 +5,8 @@ import userReducer from './slices/userSlice';
 import { userSaga } from './sagas/userSaga';
 import { persistStore, persistReducer } from 'redux-persist';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-
+import firebaseAuthReducer from "./slices/firebaseAuthSlices";
+import { firebaseAuthSaga } from './sagas/firebaseSaga';
 //creating instance of sagamiddleware
 const sagaMiddleware = createSagaMiddleware();
 
@@ -30,15 +31,17 @@ const persistedReducer = persistReducer(persistConfig, userReducer);
 export const store = configureStore({
   reducer: {
     user: persistedReducer,
+    firebaseAuth: firebaseAuthReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
       serializableCheck: {
       ignoredActions: ['persist/PERSIST'], // Ignore the persist action
-      }}).concat(logger,sagaMiddleware,)
+      }}).concat(logger,sagaMiddleware)
 });
 
 sagaMiddleware.run(userSaga);
+sagaMiddleware.run(firebaseAuthSaga);
 
 // Creating a persistor instance
 export const persistor = persistStore(store);

@@ -8,6 +8,8 @@ import EditProfile from '../screens/EditProfile';
 import Heading from '../components/Heading'; // Custom Heading component
 import DeleteAcc from '../screens/DeleteAcc';
 import { useSelector } from 'react-redux';
+import FirebaseLogin from '../screens/FirebaseLogin';
+import FirebaseSignup from '../screens/FirebaseSignup';
 // Stack Navigator for Login, Signup, and Welcome (Static Flow)
 const Stack = createNativeStackNavigator();
 
@@ -17,6 +19,16 @@ const AuthStack = () => {
     <Stack.Navigator screenOptions={{ headerShown: false }}>
       <Stack.Screen name="Login" component={Login} />
       <Stack.Screen name="Signup" component={Signup} />
+    </Stack.Navigator>
+  );
+};
+
+// Firebase auth stack
+const FirebaseAuthStack = () => {
+  return (
+    <Stack.Navigator screenOptions={{ headerShown: false }}>
+      <Stack.Screen name="FireLogin" component={FirebaseLogin} />
+      <Stack.Screen name="FireSignup" component={FirebaseSignup} />
     </Stack.Navigator>
   );
 };
@@ -168,8 +180,8 @@ function MyTopTabs() {
 
 // App Navigation Component
 const AppNavigation = () => {
-  const { isAuthenticated } = useSelector((state) => state.user);
-  return (isAuthenticated? <UserStack/> : <AuthStack/>)
+  const { isAuthenticated } = useSelector((state) => state.firebaseAuth);
+  return (isAuthenticated? <UserStack/> : <FirebaseAuthStack/>)
 };
 
 export default AppNavigation;

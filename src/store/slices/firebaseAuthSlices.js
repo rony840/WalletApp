@@ -2,6 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
     user: {email: "", password: ""},
+    authUser: {_user: {}},
     isAuthenticated: false,
     signedup: false,
     loggedin: false,
@@ -17,11 +18,11 @@ const firebaseAuthSlice = createSlice({
             state.user = action.payload;
         },
         signupFirebaseFailed: (state, action) => {
-            state.user = action.payload;
+            state.authUser = action.payload;
             state.signedup = false;
         },
         signupFirebaseSuccess: (state, action) => {
-            state.user = action.payload;
+            state.authUser = action.payload;
             state.signedup = true;
             state.isAuthenticated= true;
         },
@@ -29,11 +30,11 @@ const firebaseAuthSlice = createSlice({
             state.user = action.payload;
         },
         loginFirebaseFailed: (state, action) => {
-            state.user = action.payload;
+            state.authUser = action.payload;
             state.loggedin = false;
         },
         loginFirebaseSuccess: (state, action) => {
-            state.user = action.payload;
+            state.authUser = action.payload;
             state.loggedin = true;
             state.isAuthenticated= true;
         },

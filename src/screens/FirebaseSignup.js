@@ -1,75 +1,131 @@
-import { StyleSheet, SafeAreaView, View, ScrollView, Image, Text } from 'react-native';
-import { FormButton, FormField, Background } from '../components/Components';
+import React, { useEffect } from 'react';
+import { StyleSheet, SafeAreaView, View, ScrollView, Alert } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import FormFooter from '../components/FormFooter';
-import { Colors } from '../assets/colors/Colors';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Formik } from 'formik';
-import { FirebaseAuthSchema } from '../schemas/FirebaseAuthSchema';
-import { useDispatch, useSelector } from 'react-redux'; // Import useDispatch and useSelector
+import { useDispatch, useSelector } from 'react-redux';
+import { FormButton, FormField, Background } from '../components/Components';
+import Heading from '../components/Heading';
+import FormFooter from '../components/FormFooter';
 import { signupFirebase } from '../store/slices/firebaseAuthSlices';
+import { FirebaseSignupSchema } from '../schemas/FirebaseSignupSchema';
 
-const FirebaseSignup = () => {
+const Signup = () => {
+  const dispatch = useDispatch(); // Redux dispatch hook
   const navigation = useNavigation();
-  const dispatch = useDispatch(); // Initialize dispatch
-  const { loading, error, user } = useSelector((state) => state.user); // Access loading and error states from the Redux store
-  
-  // Handle login
-  const handleLogin = (values) => {
-    console.log('values in handle login screen: ', values);
-    dispatch(signupFirebase(values));
+  const insets = useSafeAreaInsets();
+  const { signup } = useSelector((state) => state.user);
+
+  useEffect(() => {
+      if (signup) {
+        Alert.alert('User profile created!')
+        navigation.replace('Login');  // Navigate to the logged-in screen
+      }
+    }, [signup, navigation]); // Trigger effect when isAuthenticated changes
+
+  // Handle form submission
+  const signupUseronFirebase = (values) => {
+    try {
+      // Extract values from the form
+      const { firstname, lastname, username, email, contact, password } = values;
+
+      // Prepare user data for signup
+      const userData = {
+        firstname,
+        lastname,
+        username,
+        email,
+        contact,
+        password,
+      };
+
+      // Dispatch the signupUserAction to trigger the saga
+      dispatch(signupFirebase(userData));
+
+    } catch (error) {
+      console.log(error);
+      Alert.alert('Error', error.message || 'Something went wrong');
+    }
   };
 
-  // Conditionally set initialValues based on the loading state
-  const initialValues = loading ? { email: '', password: '' } : { 
-    email: user?.email || '', 
-    password: user?.password || '' 
+  // Initialize form values for Signup
+  const initialValues = {
+    firstname: '',
+    lastname: '',
+    username: '',
+    email: '',
+    contact: '',
+    password: '',
+    confirmPassword: '',
   };
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={[styles.container, { paddingTop: insets.top }]}>
       {/* Background Component */}
       <Background />
-      <View style={styles.contentContainer}>
+      <View style={[styles.contentContainer, { paddingTop: insets.top }]}>
+        <View style={[styles.headerContainer, { paddingTop: insets.top }]}>
+          <Heading showWalletIcon={true} heading={'Firebase Signup'} />
+        </View>
         <ScrollView contentContainerStyle={styles.scrollViewContent}>
-          <View style={styles.headerContainer}>
-            <Image 
-              source={require('../assets/icons/wallet.png')} 
-              style={styles.logo}
-            />
-            <Text style={styles.companyName}>Wallet Network</Text>
-            <Text style={styles.heading}>Firebase Signup</Text>
-          </View>
           <Formik
-            initialValues={initialValues} // Use the dynamically set initial values
-            validationSchema={FirebaseAuthSchema}
-            onSubmit={handleLogin}
+            initialValues={initialValues}  // Setting initial values for Signup
+            validationSchema={FirebaseSignupSchema}
+            onSubmit={signupUseronFirebase}
+            enableReinitialize={true} // Enable re-initialization when values change
           >
-            {({ handleChange, handleSubmit, values, errors }) => (
+            {({ handleChange, handleSubmit, errors}) => (
               <View style={styles.formContainer}>
                 <FormField
+                  title={'First Name'}
+                  placeholder={'John'}
+                  onChange={handleChange('firstname')}
+                  error={errors.firstname} 
+                />
+                <FormField
+                  title={'Last Name'}
+                  placeholder={'Doe'}
+                  onChange={handleChange('lastname')}
+                  error={errors.lastname} 
+                />
+                <FormField
+                  title={'Username'}
+                  placeholder={'johndoe678'}
+                  onChange={handleChange('username')}
+                  error={errors.username} 
+                />
+                <FormField
                   title={'Email'}
-                  placeholder={'john@example.com'}
+                  placeholder={'johndoe@example.com'}
                   onChange={handleChange('email')}
-                  value1={values.email}
                   error={errors.email} 
                 />
                 <FormField
-                  title={'Password'}
-                  placeholder={'* * * * * * *'}
-                  onChange={handleChange('password')}
-                  secure={true}
-                  value1={values.password}
-                  error={errors.password}
+                  title={'Contact'}
+                  placeholder={'+1 123 456 7890'}
+                  onChange={handleChange('contact')}
+                  error={errors.contact} 
                 />
-                {/* Show error message from Redux state */}
-                {error && <Text style={styles.errorText}>{error}</Text>}
-                <FormButton title={'Login'} onPress={handleSubmit} disabled={loading} />
+                <FormField
+                  title={'Password'}
+                  placeholder={'*******'}
+                  onChange={handleChange('password')}
+                  error={errors.password}
+                  secure={true} 
+                />
+                <FormField
+                  title={'Confirm Password'}
+                  placeholder={'*******'}
+                  onChange={handleChange('confirmPassword')}
+                  error={errors.confirmPassword}
+                  secure={true} 
+                />
+                <FormButton title={'Sign Up'} onPress={handleSubmit} />
               </View>
             )}
           </Formik>
         </ScrollView>
-        {/* Footer */}
-        <FormFooter title1={"Don't have an account?"} title2={"Login"} onPress={() => navigation.replace('FireLogin')} />
+        <FormFooter title1={"Already have an account?"} title2={"Login"} onPress={() => navigation.replace('FireLogin')} />
       </View>
     </SafeAreaView>
   );
@@ -79,32 +135,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: 'transparent',
-  },
-  headerContainer: {
-    position: 'absolute',
-    top: 100,
-    left: 0,
-    right: 0,
-    bottom: 0,
-    alignItems: 'center',
-    justifyContent: 'flex-start',
-    marginBottom: 120,
-  },
-  logo: {
-    width: 150,
-    height: 150,
-    tintColor: Colors.logoColor1,
-  },
-  companyName: {
-    color: Colors.companyName,
-    fontWeight: '500',
-    fontSize: 30,
-  },
-  heading: {
-    marginTop: '5%',
-    fontWeight: '800',
-    color: Colors.headingColor1,
-    fontSize: 45,
   },
   contentContainer: {
     position: 'absolute',
@@ -116,9 +146,18 @@ const styles = StyleSheet.create({
     paddingHorizontal: '5%',
     paddingVertical: '5%',
   },
+  headerContainer: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    height: 80,
+    zIndex: 20,
+  },
   formContainer: {
     flex: 1,
-    marginTop: '100%',
+    marginTop: '25%',
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -126,11 +165,6 @@ const styles = StyleSheet.create({
     flexGrow: 1,
     justifyContent: 'space-between',
   },
-  errorText: {
-    color: 'red',
-    fontSize: 14,
-    marginBottom: 10,
-  },
 });
 
-export default FirebaseSignup;
+export default Signup;

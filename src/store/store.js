@@ -20,18 +20,19 @@ const logger = createLogger({
 const persistConfig = {
   key: 'root', // Key to identify the persisted state
   storage: AsyncStorage, // You can change this to sessionStorage or AsyncStorage for React Native
-  whitelist: ['user'], // Only persist the `user` slice
+  whitelist: ['user','firebaseAuth'], // persist firebase and user
   blacklist: [] // Optionally, you can blacklist some slices to not persist
 };
 
 // Apply the persistReducer to your userReducer
 const persistedReducer = persistReducer(persistConfig, userReducer);
+const persistedFirebase = persistReducer(persistConfig, firebaseAuthReducer);
 
 // Configuring the store with logger middleware
 export const store = configureStore({
   reducer: {
     user: persistedReducer,
-    firebaseAuth: firebaseAuthReducer,
+    firebaseAuth: persistedFirebase,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

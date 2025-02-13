@@ -1,9 +1,9 @@
 import { login,signup } from "./FirebaseClient";
 import { Alert } from 'react-native';
 
-export const signUpOnFirebase = async (email, password) => {
+export const signUpOnFirebase = async (email, password, userData) => {
   try {
-    const user = await signup(email, password);
+    const user = await signup(email, password, userData);
     console.log('Signed up as:', user.email);
     Alert.alert('Signed up:', user.email);
     return user;

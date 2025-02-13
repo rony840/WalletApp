@@ -17,7 +17,7 @@ function* loginFirebaseSaga(action) {
         console.log('Login response:', response);
         
         // Dispatch success action with user data
-        yield put(loginFirebaseSuccess(response)); 
+        yield put(loginFirebaseSuccess(response._user)); 
         
     } catch (error) {
         console.error('Login error:', error);
@@ -38,7 +38,7 @@ function* signupFirebaseSaga(action) {
         console.log('User in signup saga:', action.payload.email);
         
         // Call Firebase authentication API
-        const response = yield call(signUpOnFirebase, action.payload.email, action.payload.password);
+        const response = yield call(signUpOnFirebase, action.payload.email, action.payload.password, action.payload);
         
         console.log('Signup response:', response);
         

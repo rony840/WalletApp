@@ -4,14 +4,14 @@ import { useNavigation } from '@react-navigation/native';
 import FormFooter from '../components/FormFooter';
 import { Colors } from '../assets/colors/Colors';
 import { Formik } from 'formik';
-import { FirebaseAuthSchema } from '../schemas/FirebaseAuthSchema';
+import { FirebaseLoginSchema } from '../schemas/FirebaseLoginSchema';
 import { useDispatch, useSelector } from 'react-redux'; // Import useDispatch and useSelector
 import { loginFirebase } from '../store/slices/firebaseAuthSlices';
 
 const FirebaseLogin = () => {
   const navigation = useNavigation();
   const dispatch = useDispatch(); // Initialize dispatch
-  const { loading, error, user } = useSelector((state) => state.user); // Access loading and error states from the Redux store
+  const { loading, error, user } = useSelector((state) => state.firebaseAuth); // Access loading and error states from the Redux store
   
   // Handle login
   const handleLogin = (values) => {
@@ -41,7 +41,7 @@ const FirebaseLogin = () => {
           </View>
           <Formik
             initialValues={initialValues} // Use the dynamically set initial values
-            validationSchema={FirebaseAuthSchema}
+            validationSchema={FirebaseLoginSchema}
             onSubmit={handleLogin}
           >
             {({ handleChange, handleSubmit, values, errors }) => (

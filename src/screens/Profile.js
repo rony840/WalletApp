@@ -8,7 +8,7 @@ import { fetch } from 'react-native-ssl-pinning';
 const Profile = () => {
   const user = useSelector((state) => state.user.user); // Fetch user data from Redux state
   const { walletBalance, credit, debit } = user || {}; // Destructuring
-  const secureFetchData = () => {
+  const sslPinning = () => {
     fetch("https://jsonplaceholder.typicode.com/posts/1", {
         method: "GET",
         timeoutInterval: 10000,
@@ -24,6 +24,27 @@ const Profile = () => {
         })
 }
 
+const pkPinning = () => {
+  fetch("https://publicobject.com", {
+      method: "GET",
+      timeoutInterval: 10000,
+      pkPinning: true,
+      sslPinning: {
+          certs: ["sha256/OpW2lxrMxKYHMAKUAkTMksl+URfwYNmkQyd8eOoDw/U=",
+            "sha256/K7rZOrXHknnsEhUH8nLL4MZkejquUuIvOIr6tCa0rbo=",
+            "sha256/C5+lpZ7tcVwmwQIMcRtPbsQtWLABXhQzejna0wHFr8M="]
+      }
+  })
+      .then(response => {
+          console.log('positive response: ',JSON.stringify(response.bodyString, null, "\t"))
+      })
+      .catch(err => {
+          console.log(`error: ${err}`)
+      })
+}
+
+
+
   return (
     <SafeAreaView style={styles.container}>
       {/* Background Component */}
@@ -32,10 +53,11 @@ const Profile = () => {
         <View style={styles.bodyContainer}>
           <ProfileCard bal={walletBalance} cred={credit} deb={debit}/>
           <View style={styles.btnContainer}>
-          <TransactionButton title={'Secure Fetch'} onPress={()=>secureFetchData()}/>
-          <TransactionButton title={'Load Money'}/>
+          <TransactionButton title={'Ssl Pinning'} onPress={()=>sslPinning()}/>
+          <TransactionButton title={'PK Pinning'} onPress={()=>pkPinning()}/>
+          {/* <TransactionButton title={'Load Money'}/>
           <TransactionButton title={'Withdraw Money'}/>
-          <TransactionButton title={'Send Money'}/>
+          <TransactionButton title={'Send Money'}/> */}
           </View>
         </View>
       </View>

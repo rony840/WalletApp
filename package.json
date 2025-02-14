@@ -30,6 +30,7 @@
     "react-native-reanimated": "^3.16.7",
     "react-native-safe-area-context": "^5.1.0",
     "react-native-screens": "^4.6.0",
+    "react-native-ssl-pinning": "^1.5.8",
     "react-redux": "^9.2.0",
     "redux-logger": "^3.0.6",
     "redux-persist": "^6.0.0",

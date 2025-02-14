@@ -19,24 +19,12 @@ $RNFirebaseAsStaticFramework = true
 
 target 'WalletNetwork' do
   config = use_native_modules!
-  hermes_enabled = false
-  fabric_enabled = false
-
 
   use_react_native!(
     :path => config[:reactNativePath],
     # An absolute path to your application root.
     :app_path => "#{Pod::Config.instance.installation_root}/.."
   )
-  
-  # Add Firebase dependencies
-    pod 'Firebase/Core'   # Required for Firebase
-    pod 'FirebaseAppCheck'
-    pod 'FirebaseAuth'
-    pod 'FirebaseFirestore'
-    pod 'FirebaseDatabase'
-    pod 'FirebaseStorage'
-    pod 'FirebaseMessaging' # If using push notifications
 
   post_install do |installer|
     # https://github.com/facebook/react-native/blob/main/packages/react-native/scripts/react_native_pods.rb#L197-L202

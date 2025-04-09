@@ -1145,6 +1145,21 @@ PODS:
     - abseil/meta/type_traits
     - abseil/xcprivacy
   - abseil/xcprivacy (1.20240116.2)
+  - AFNetworking (4.0.1):
+    - AFNetworking/NSURLSession (= 4.0.1)
+    - AFNetworking/Reachability (= 4.0.1)
+    - AFNetworking/Security (= 4.0.1)
+    - AFNetworking/Serialization (= 4.0.1)
+    - AFNetworking/UIKit (= 4.0.1)
+  - AFNetworking/NSURLSession (4.0.1):
+    - AFNetworking/Reachability
+    - AFNetworking/Security
+    - AFNetworking/Serialization
+  - AFNetworking/Reachability (4.0.1)
+  - AFNetworking/Security (4.0.1)
+  - AFNetworking/Serialization (4.0.1)
+  - AFNetworking/UIKit (4.0.1):
+    - AFNetworking/NSURLSession
   - boost (1.84.0)
   - BoringSSL-GRPC (0.0.36):
     - BoringSSL-GRPC/Implementation (= 0.0.36)
@@ -3091,6 +3106,9 @@ PODS:
     - ReactCommon/turbomodule/bridging
     - ReactCommon/turbomodule/core
     - Yoga
+  - RNSslPinning (1.5.8):
+    - AFNetworking (~> 4.0)
+    - React
   - SocketRocket (0.7.1)
   - Yoga (0.0.0)
 
@@ -3171,11 +3189,13 @@ DEPENDENCIES:
   - RNGestureHandler (from `../node_modules/react-native-gesture-handler`)
   - RNReanimated (from `../node_modules/react-native-reanimated`)
   - RNScreens (from `../node_modules/react-native-screens`)
+  - RNSslPinning (from `../node_modules/react-native-ssl-pinning`)
   - Yoga (from `../node_modules/react-native/ReactCommon/yoga`)
 
 SPEC REPOS:
   trunk:
     - abseil
+    - AFNetworking
     - BoringSSL-GRPC
     - Firebase
     - FirebaseAppCheckInterop
@@ -3346,11 +3366,14 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-reanimated"
   RNScreens:
     :path: "../node_modules/react-native-screens"
+  RNSslPinning:
+    :path: "../node_modules/react-native-ssl-pinning"
   Yoga:
     :path: "../node_modules/react-native/ReactCommon/yoga"
 
 SPEC CHECKSUMS:
   abseil: d121da9ef7e2ff4cab7666e76c5a3e0915ae08c3
+  AFNetworking: 3bd23d814e976cd148d7d44c3ab78017b744cd58
   boost: 7e761d76ca2ce687f7cc98e698152abd03a18f90
   BoringSSL-GRPC: ca6a8e5d04812fce8ffd6437810c2d46f925eaeb
   DoubleConversion: cb417026b2400c8f53ae97020b2be961b59470cb
@@ -3443,6 +3466,7 @@ SPEC CHECKSUMS:
   RNGestureHandler: 22a74b1b02b40a313be9f3da8807bde534d77caa
   RNReanimated: 5b55896edb30f24afe430635cb6aecd110eb4b50
   RNScreens: 907675c47a5b44b8dbc5b507c66e5c70c8cb22be
+  RNSslPinning: 4478c22fed7179a22be2bdd7d7f235fc51bf85dc
   SocketRocket: d4aabe649be1e368d1318fdf28a022d714d65748
   Yoga: c34725819ab0a5962e85455b9e56679b306910ee
 

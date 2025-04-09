@@ -25,7 +25,7 @@ const Profile = () => {
 }
 
 const pkPinning = () => {
-  fetch("https://publicobject.com", {
+  fetch("https://jsonplaceholder.typicode.com/posts/1", {
       method: "GET",
       timeoutInterval: 10000,
       pkPinning: true,

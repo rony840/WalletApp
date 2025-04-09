@@ -4,24 +4,24 @@ import { useNavigation } from '@react-navigation/native';
 import FormFooter from '../components/FormFooter';
 import { Colors } from '../assets/colors/Colors';
 import { Formik } from 'formik';
-import { LoginSchema } from '../schemas/LoginSchema';
+import { FirebaseLoginSchema } from '../schemas/FirebaseLoginSchema';
 import { useDispatch, useSelector } from 'react-redux'; // Import useDispatch and useSelector
-import { loginUserAction } from '../store/slices/userSlice'; // Import necessary actions
+import { loginFirebase } from '../store/slices/firebaseAuthSlices';
 
-const Login = () => {
+const FirebaseLogin = () => {
   const navigation = useNavigation();
   const dispatch = useDispatch(); // Initialize dispatch
-  const { loading, error, user } = useSelector((state) => state.user); // Access loading and error states from the Redux store
+  const { loading, error, user } = useSelector((state) => state.firebaseAuth); // Access loading and error states from the Redux store
   
   // Handle login
   const handleLogin = (values) => {
     console.log('values in handle login screen: ', values);
-    dispatch(loginUserAction(values));
+    dispatch(loginFirebase(values));
   };
 
   // Conditionally set initialValues based on the loading state
-  const initialValues = loading ? { username: '', password: '' } : { 
-    username: user?.username || '', 
+  const initialValues = loading ? { email: '', password: '' } : { 
+    email: user?.email || '', 
     password: user?.password || '' 
   };
 
@@ -37,21 +37,21 @@ const Login = () => {
               style={styles.logo}
             />
             <Text style={styles.companyName}>Wallet Network</Text>
-            <Text style={styles.heading}>Login</Text>
+            <Text style={styles.heading}>Firebase Login</Text>
           </View>
           <Formik
             initialValues={initialValues} // Use the dynamically set initial values
-            validationSchema={LoginSchema}
+            validationSchema={FirebaseLoginSchema}
             onSubmit={handleLogin}
           >
             {({ handleChange, handleSubmit, values, errors }) => (
               <View style={styles.formContainer}>
                 <FormField
-                  title={'Username'}
-                  placeholder={'johndoe678'}
-                  onChange={handleChange('username')}
-                  value1={values.username}
-                  error={errors.username} 
+                  title={'Email'}
+                  placeholder={'john@example.com'}
+                  onChange={handleChange('email')}
+                  value1={values.email}
+                  error={errors.email} 
                 />
                 <FormField
                   title={'Password'}
@@ -69,7 +69,7 @@ const Login = () => {
           </Formik>
         </ScrollView>
         {/* Footer */}
-        <FormFooter title1={"Don't have an account?"} title2={"SignUp"} onPress={() => navigation.replace('Signup')} />
+        <FormFooter title1={"Don't have an account?"} title2={"SignUp"} onPress={() => navigation.replace('FireSignup')} />
       </View>
     </SafeAreaView>
   );
@@ -133,4 +133,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Login;
+export default FirebaseLogin;

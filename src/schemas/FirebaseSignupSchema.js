@@ -1,11 +1,11 @@
 import * as yup from 'yup';
 
-export const SignupSchema = yup.object().shape({
-  firstName: yup.string()
-    .min(2, 'Too Short!')
-    .max(50, 'Too Long!')
-    .required('Required'),
-  lastName: yup.string()
+export const FirebaseSignupSchema = yup.object().shape({
+  firstname: yup.string()
+      .min(2, 'Too Short!')
+      .max(50, 'Too Long!')
+      .required('Required'),
+  lastname: yup.string()
     .min(2, 'Too Short!')
     .max(50, 'Too Long!')
     .required('Required'),

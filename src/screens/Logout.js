@@ -1,24 +1,14 @@
-import { StyleSheet, SafeAreaView, View, Text, Alert } from 'react-native';
+import { StyleSheet, SafeAreaView, View } from 'react-native';
 import { Background } from '../components/Components';
 import TextDisplay from '../components/TextDisplay';
 import TransactionButton from '../components/TransactionButton';
 import { useNavigation } from '@react-navigation/native';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { logoutUserAction } from '../store/slices/userSlice';
-import { useEffect } from 'react';
 
 const Logout = () => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
-  const { isAuthenticated, user } = useSelector((state) => state.user); // Access loading and error states from the Redux store
-
-  useEffect(() => {
-    if (!isAuthenticated) {
-      Alert.alert('You have been logged out successfully');
-      navigation.replace('Login');  // Navigate to the logged-in screen
-      console.log('user state in logout:',user)
-    }
-  }, [isAuthenticated, navigation]); 
 
   // Function to handle logout
   const handleLogout = async () => {

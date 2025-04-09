@@ -8,15 +8,35 @@ import EditProfile from '../screens/EditProfile';
 import Heading from '../components/Heading'; // Custom Heading component
 import DeleteAcc from '../screens/DeleteAcc';
 import { useSelector } from 'react-redux';
+import FirebaseLogin from '../screens/FirebaseLogin';
+import FirebaseSignup from '../screens/FirebaseSignup';
 // Stack Navigator for Login, Signup, and Welcome (Static Flow)
 const Stack = createNativeStackNavigator();
 
-// Root Stack with Login, Signup, and Drawer Navigation
-const RootStack = () => {
+// auth stack
+const AuthStack = () => {
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
       <Stack.Screen name="Login" component={Login} />
       <Stack.Screen name="Signup" component={Signup} />
+    </Stack.Navigator>
+  );
+};
+
+// Firebase auth stack
+const FirebaseAuthStack = () => {
+  return (
+    <Stack.Navigator screenOptions={{ headerShown: false }}>
+      <Stack.Screen name="FireLogin" component={FirebaseLogin} />
+      <Stack.Screen name="FireSignup" component={FirebaseSignup} />
+    </Stack.Navigator>
+  );
+};
+
+//user stack
+const UserStack = () => {
+  return (
+    <Stack.Navigator screenOptions={{ headerShown: false }}>
       <Stack.Screen name="LoggedIn" component={DrawerTab} />
     </Stack.Navigator>
   );
@@ -100,6 +120,9 @@ function DrawerTab() {
           } else if (name === 'Logout') {
             headingText = 'Logout';
             iconClickEnabled = false; // Disable icon click on Edit Profile screen
+          } else if (name === 'Delete Account') {
+            headingText = 'Delete Account';
+            iconClickEnabled = false; // Disable icon click on Edit Profile screen
           }
 
           return (
@@ -157,7 +180,8 @@ function MyTopTabs() {
 
 // App Navigation Component
 const AppNavigation = () => {
-  return <RootStack />;
+  const { isAuthenticated } = useSelector((state) => state.firebaseAuth);
+  return (isAuthenticated? <UserStack/> : <FirebaseAuthStack/>)
 };
 
 export default AppNavigation;
